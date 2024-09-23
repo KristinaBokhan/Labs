@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 
-# Інтерфейс для будівельника запитів
 class QueryBuilder(ABC):
 
     @abstractmethod
@@ -21,7 +20,6 @@ class QueryBuilder(ABC):
         pass
 
 
-# Будівельник для PostgreSQL
 class PostgreSQLQueryBuilder(QueryBuilder):
     def __init__(self):
         self.query = ""
@@ -39,7 +37,6 @@ class PostgreSQLQueryBuilder(QueryBuilder):
         return self.query
 
 
-# Будівельник для MySQL
 class MySQLQueryBuilder(QueryBuilder):
     def __init__(self):
         self.query = ""
@@ -57,7 +54,6 @@ class MySQLQueryBuilder(QueryBuilder):
         return self.query
 
 
-# Директор (опціонально)
 class Director:
     def __init__(self, builder: QueryBuilder):
         self.builder = builder
@@ -69,15 +65,12 @@ class Director:
         return self.builder.getSQL()
 
 
-# Клієнтський код
 if __name__ == "__main__":
-    # Приклад для PostgreSQL
     postgres_builder = PostgreSQLQueryBuilder()
     director = Director(postgres_builder)
     postgres_query = director.build_simple_query("users", ["id", "name", "email"], "id > 10", 5)
     print("PostgreSQL Query:", postgres_query)
 
-    # Приклад для MySQL
     mysql_builder = MySQLQueryBuilder()
     director = Director(mysql_builder)
     mysql_query = director.build_simple_query("users", ["id", "name", "email"], "id > 10", 5)
